@@ -144,7 +144,7 @@ const BrandPage: React.FC = () => {
                       <FaStar className="text-yellow-400 mr-1" />
                       <span>{brand.average_rating}</span>
                     </div>
-                    <p>{brand.products_count} sản phẩm</p>
+                    {/* <p>{brand.products_count} sản phẩm</p> */}
                     <div className="card-actions">
                       <button className="btn bg-[#40BFFF] hover:bg-[#3389cc] text-white border-none">
                         Xem sản phẩm

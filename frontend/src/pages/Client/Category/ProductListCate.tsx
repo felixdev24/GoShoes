@@ -120,9 +120,9 @@ const ProductListCate = () => {
 				>
 					<span className="text-lg font-medium">
 						{selectedCate
-							? `Selected: ${cate.find((b: any) => b.id === selectedCate)?.name
+							? `Chọn: ${cate.find((b: any) => b.id === selectedCate)?.name
 							}`
-							: 'Select a Brand'}
+							: 'Chọn theo danh mục'}
 					</span>
 					{/* Biểu tượng mũi tên chỉ xuống */}
 					<svg

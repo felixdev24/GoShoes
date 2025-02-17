@@ -63,7 +63,7 @@ const ContactUs = () => {
         message: formData.message,
       });
       if (response.data.success) {
-        toast.success("Message sent successfully!");
+        toast.success("Liên hệ của bạn đã được gửi thành công.");
         setFormData({
           fullName: "",
           email: "",

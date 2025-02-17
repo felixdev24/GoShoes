@@ -320,42 +320,6 @@ const CheckoutPage = () => {
       const { hasChanges, updatedItems } = await checkPriceAndStock();
 
       if (hasChanges) {
-        Swal.fire({
-          title: 'Xác nhận xóa',
-          text: 'Bạn có chắc chắn muốn xóa sản phẩm này khỏi giỏ hàng?',
-          icon: 'warning',
-          showCancelButton: true,
-          confirmButtonText: 'Xóa',
-          cancelButtonText: 'Hủy',
-          customClass: {
-            popup: 'bg-white shadow rounded-lg p-4 max-w-[500px]',
-            title: 'text-base font-bold text-gray-800',
-            htmlContainer: 'text-sm text-gray-600',
-            confirmButton:
-              'bg-red-500 text-white px-4 py-2 rounded hover:bg-red-600 mr-2',
-            cancelButton:
-              'bg-gray-300 text-gray-800 px-4 py-2 rounded hover:bg-gray-400',
-          },
-          buttonsStyling: false,
-        }).then((result) => {
-          if (result.isConfirmed) {
-            setOrderState(prev => ({
-              ...prev,
-              items: updatedItems,
-              subtotal: updatedItems.reduce((sum: any, item: any) => sum + item.total, 0)
-            }));
-            toast.success("Prices have been updated. Please review your order.", {
-              duration: 5000,
-            })
-            setIsLoading(false);
-            setHasOrdered(false);
-            return;
-          } else {
-            navigate('/cart');
-            return;
-          }
-        })
-
         const willContinue = window.confirm(
           "Giá của một số sản phẩm đã thay đổi. Bạn có muốn tiếp tục đặt hàng với giá mới không?"
         );
@@ -374,7 +338,7 @@ const CheckoutPage = () => {
             subtotal: updatedItems.reduce((sum: any, item: any) => sum + item.total, 0)
           }));
 
-          toast.success("Prices have been updated. Please review your order.", {
+          toast.success("Giá mới đã được cập nhật hãy tiếp tục mua hàng!", {
             duration: 5000,
           });
           return;
@@ -421,39 +385,6 @@ const CheckoutPage = () => {
           const finalAmount = orderState.subtotal - calculateDiscount();
 
           if (finalAmount > 0 && response.data.payment_url) {
-            Swal.fire({
-              title: 'Xác nhận xóa',
-              text: 'Bạn có chắc chắn muốn xóa sản phẩm này khỏi giỏ hàng?',
-              icon: 'warning',
-              showCancelButton: true,
-              confirmButtonText: 'Xóa',
-              cancelButtonText: 'Hủy',
-              customClass: {
-                popup: 'bg-white shadow rounded-lg p-4 max-w-[500px]',
-                title: 'text-base font-bold text-gray-800',
-                htmlContainer: 'text-sm text-gray-600',
-                confirmButton:
-                  'bg-red-500 text-white px-4 py-2 rounded hover:bg-red-600 mr-2',
-                cancelButton:
-                  'bg-gray-300 text-gray-800 px-4 py-2 rounded hover:bg-gray-400',
-              },
-              buttonsStyling: false,
-            }).then((result) => {
-              if (result.isConfirmed) {
-                setOrderState(prev => ({
-                  ...prev,
-                  items: updatedItems,
-                  subtotal: updatedItems.reduce((sum: any, item: any) => sum + item.total, 0)
-                }));
-                toast.success("Prices have been updated. Please review your order.");
-                setIsLoading(false);
-                setHasOrdered(false);
-                return;
-              } else {
-                navigate('/cart');
-                return;
-              }
-            })
             const willRedirect = window.confirm(
               "Đơn hàng của bạn đã được tạo. Bạn có muốn chuyển đến trang thanh toán không?"
             );
@@ -721,6 +652,36 @@ const CheckoutPage = () => {
         </div>
       </div>
     );
+  };
+
+  const handleSuccessfulOrder = async (orderResponse: any) => {
+    try {
+      console.log('Order response:', orderResponse);
+      await Swal.fire({
+        title: 'Đặt hàng thành công!',
+        text: `Mã đơn hàng của bạn là: ${orderResponse.sku}`,
+        icon: 'success',
+        confirmButtonText: 'Xem đơn hàng',
+        showCancelButton: true,
+        cancelButtonText: 'Tiếp tục mua sắm'
+      }).then((result) => {
+        if (result.isConfirmed) {
+          // Navigate to order detail
+          navigate(`/account/my-order`);
+        } else {
+          // Return to home/product page
+          navigate('/');
+        }
+      });
+  
+      // Clear cart after successful order
+      setIsLoading(false);
+      setHasOrdered(false);
+  
+    } catch (error) {
+      console.error('Error handling successful order:', error);
+      toast.error('Có lỗi xảy ra khi xử lý đơn hàng');
+    }
   };
 
   return (

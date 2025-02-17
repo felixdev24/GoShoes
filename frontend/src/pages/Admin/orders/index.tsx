@@ -86,7 +86,7 @@ interface PaginationState {
 // Create axios instance with default config
 const api = axios.create({
   baseURL: import.meta.env.VITE_API_URL,
-  timeout: 10000,
+  timeout: 12000,
 });
 
 api.interceptors.request.use(
@@ -702,7 +702,7 @@ export default function OrderDashboard() {
                   </td>
                   <td className="px-6 py-4">
                     <span
-                      className={`px-3 py-1 rounded-full text-sm ${getStatusColor(
+                      className={`px-3 w-full py-1 rounded-full text-sm ${getStatusColor(
                         order.status
                       )}`}
                     >

@@ -609,7 +609,7 @@ export default function OrderList(): JSX.Element {
 								setOpenDialog({ type: 'refund', orderId: order.id })
 							}
 						>
-							Return & Refund
+							Trả hàng/hoàn tiền
 						</Button>
 						<Button
 							variant="contained"
